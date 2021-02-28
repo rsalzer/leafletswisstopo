@@ -1,0 +1,138 @@
+/<html>
+<head>
+	<meta charset=utf-8 />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+	<title>Swisstopo Leaflet Example</title>
+    <!-- Load Leaflet from CDN-->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.0.1/dist/leaflet.css" />
+    <script src="https://unpkg.com/leaflet@1.0.1/dist/leaflet-src.js"></script>
+	<style>
+		.leaflet-control-layers{
+			font-size: 15px;
+		}
+	</style>
+</head>
+<body>
+	<div id="mapid" style="
+		position: absolute;
+		left: 0px;
+		top: 0px;
+		height: 100%;
+		width: 100%;"
+	/>
+
+<script>
+	map = new L.Map('mapid', {
+		maxZoom: 18
+	});
+	var geoadminUrl = 'http://wms.geo.admin.ch/?';
+
+	/*
+	var wmtsurl = 'https://wmts20.geo.admin.ch/1.0.0/ch.swisstopo.pixelkarte-farbe/default/current/3857/{z}/{x}/{y}.jpeg';
+	var swisstopoServiceURL = "https://api3.geo.admin.ch/rest/services/api/MapServer/layersConfig?lang=en";
+	'Landeskarten WMTS': new L.tileLayer('https://wmts20.geo.admin.ch/1.0.0/ch.swisstopo.pixelkarte-farbe/default/current/3857/{z}/{x}/{y}.jpeg',{
+		detectRetina: true,
+	}),
+	*/
+	var basemaps = {
+		'Landeskarten': L.tileLayer.wms(geoadminUrl, {
+			layers: 'ch.swisstopo.pixelkarte-farbe',
+			format: 'image/jpeg',
+			detectRetina: true,
+	  }),
+		'Swissimage': L.tileLayer.wms(geoadminUrl, {
+			layers: 'ch.swisstopo.swissimage',
+			format: 'image/jpeg',
+			detectRetina: true,
+	  }),
+		'Dufourkarte': L.tileLayer.wms(geoadminUrl, {
+			layers: 'ch.swisstopo.hiks-dufour',
+			format: 'image/jpeg',
+			detectRetina: true,
+	  }),
+		'Landeskarten grau': L.tileLayer.wms(geoadminUrl, {
+			layers: 'ch.swisstopo.pixelkarte-grau',
+			format: 'image/jpeg',
+			detectRetina: true,
+	  }),
+		'Landeskarte Winter': L.tileLayer.wms(geoadminUrl, {
+			layers: 'ch.swisstopo.pixelkarte-farbe-winter',
+			format: 'image/jpeg',
+			detectRetina: true,
+		}),
+	  'Tektonische Karte': L.tileLayer.wms(geoadminUrl, {
+			layers: 'ch.swisstopo.geologie-tektonische_karte',
+			format: 'image/jpeg',
+			detectRetina: true
+		}),
+		'Geologische Karte': L.tileLayer.wms(geoadminUrl, {
+			layers: 'ch.swisstopo.geologie-geologische_karte',
+			format: 'image/jpeg',
+			detectRetina: true
+	  })
+	};
+
+	var overlays = {
+		'Strassennamen': L.tileLayer.wms(geoadminUrl, {
+				layers: 'ch.swisstopo.amtliches-strassenverzeichnis',
+				format: 'image/png',
+				transparent: true,
+	    }),
+		'Amtliches Gebäudeadressverzeichnis': L.tileLayer.wms(geoadminUrl, {
+			layers: 'ch.swisstopo.amtliches-gebaeudeadressverzeichnis',
+			format: 'image/png',
+			transparent: true,
+    }),
+		'Swissnames': 	L.tileLayer.wms(geoadminUrl, {
+			layers: 'ch.swisstopo.swissnames3d_label',
+			format: 'image/png',
+			transparent: true,
+			detectRetina: true
+	    }),
+		'Ortschaftenverzeichnis': 	L.tileLayer.wms(geoadminUrl, {
+			layers: 'ch.swisstopo-vd.ortschaftenverzeichnis_plz',
+			format: 'image/png',
+			transparent: true,
+			opacity: 0.5,
+     }),
+    'Gemeindegrenzen': 	L.tileLayer.wms(geoadminUrl, {
+			layers: 'ch.swisstopo.swissboundaries3d-gemeinde-flaeche.fill',
+			format: 'image/png',
+			transparent: true,
+    }),
+		'Kantonsgrenzen': 	L.tileLayer.wms(geoadminUrl, {
+			layers: 'ch.swisstopo.swissboundaries3d-kanton-flaeche.fill',
+			format: 'image/png',
+			transparent: true,
+    }),
+		'Skitouren': L.tileLayer.wms(geoadminUrl, {
+				layers: 'ch.swisstopo-karto.skitouren',
+				format: 'image/png',
+				transparent: true,
+		}),
+		'Wanderwege': L.tileLayer.wms(geoadminUrl, {
+				layers: 'ch.swisstopo.swisstlm3d-wanderwege',
+				format: 'image/png',
+				transparent: true,
+			}),
+		'Reisezeit zu Zentren ÖV': L.tileLayer.wms(geoadminUrl, {
+				layers: 'ch.are.reisezeit-oev',
+				format: 'image/png',
+				transparent: true,
+			}),
+			'Schienennetz': L.tileLayer.wms(geoadminUrl, {
+					layers: 'ch.bav.schienennetz',
+					format: 'image/png',
+					transparent: true,
+					detectRetina: true,
+				}),
+	};
+
+	L.control.layers(basemaps, overlays).addTo(map);
+	var layer = basemaps["Landeskarten"];
+	map.addLayer(layer);
+	map.setView([47.366989, 8.545079], 10);
+	map.attributionControl.addAttribution("Maps by <a href='https://www.swisstopo.admin.ch/en/home.html'>swisstopo</a>");
+</script>
+</body>
+</html>
